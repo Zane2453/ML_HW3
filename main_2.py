@@ -1,6 +1,7 @@
 import argparse
 import random
 from math import sqrt, log
+from main_1a import MP_method
 
 def set_args():
     parser = argparse.ArgumentParser()
@@ -9,20 +10,6 @@ def set_args():
     args = parser.parse_args()
 
     return args
-
-# use Marsaglia polar method
-def MP_method(mean, std):
-    while True:
-        u = random.uniform(-1, 1)
-        v = random.uniform(-1, 1)
-        if (u**2) + (v**2) < 1:
-            break;
-
-    s = (u**2) + (v**2)
-    x = u * sqrt((-2) * log(s) / s)
-    y = v * sqrt((-2) * log(s) / s)
-
-    return mean + (std * x)
 
 if __name__ == "__main__":
     args = set_args()
