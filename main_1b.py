@@ -1,6 +1,6 @@
 import argparse
 import random
-from math import sqrt, log
+from math import sqrt
 import numpy as np
 from main_1a import MP_method
 
@@ -13,6 +13,14 @@ def set_args():
 
     return args
 
+# the Polynomial basis linear model data generator
+def Polynomial(data_point, gaussian, weights):
+    y = gaussian
+    for index, weight in enumerate(weights):
+        y += (data_point ** index) * weight
+
+    return y
+
 if __name__ == "__main__":
     args = set_args()
 
@@ -23,8 +31,4 @@ if __name__ == "__main__":
     x = random.uniform(-1, 1)
     e = MP_method(mean, std)
 
-    y = e
-    for index, weight in enumerate(weights):
-        y += (x**index) * weight
-
-    print(f'Polynomial Basis value: {y}')
+    print(f'Polynomial Basis value: {Polynomial(x, e, weights)}')

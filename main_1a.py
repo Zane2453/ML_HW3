@@ -11,6 +11,7 @@ def set_args():
     return args
 
 # use Marsaglia polar method
+# https://en.wikipedia.org/wiki/Normal_distribution#Generating_values_from_normal_distribution
 def MP_method(mean, std):
     while True:
         u = random.uniform(-1, 1)

@@ -1,6 +1,5 @@
 import argparse
-import random
-from math import sqrt, log
+from math import sqrt
 from main_1a import MP_method
 
 def set_args():
@@ -25,6 +24,7 @@ if __name__ == "__main__":
 
     while abs(mean - args.mean) > 0.01 or abs(var - args.var) > 0.01:
         # use Welford's online algorithm
+        # https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Online_algorithm
         data_point = MP_method(args.mean, std)
 
         num += 1
