@@ -18,16 +18,16 @@ def set_args():
 def plot_result(stage, result, var, weights, covar):
     if stage == 'ground':
         plt.subplot(2, 2, 1)
-        plt.title("Ground truth")
+        plt.title("Ground truth", fontsize=12)
     elif stage == 'final':
         plt.subplot(2, 2, 2)
-        plt.title("Predict result")
+        plt.title("Predict result", fontsize=12)
     elif stage == 'ten':
         plt.subplot(2, 2, 3)
-        plt.title("After 10 incomes")
+        plt.title("After 10 incomes", fontsize=12)
     elif stage == 'fifty':
         plt.subplot(2, 2, 4)
-        plt.title("After 50 incomes")
+        plt.title("After 50 incomes", fontsize=12)
 
     plot_x = np.linspace(-2, 2, 100)
     plt.xlim(-2, 2)
@@ -102,4 +102,5 @@ if __name__ == "__main__":
             break
 
     plot_result('final', predict, predict_Y_var, posterior_mean, posterior_covar)
+    plt.tight_layout(pad=0.5)
     plt.show()
