@@ -15,18 +15,11 @@ def set_args():
 
     return args
 
-def ground_graph(var, weights):
-    plt.subplot(2, 2, 1)
-    plt.title("Ground truth")
-    plot_x = np.linspace(-2, 2, 100)
-    plt.xlim(-2, 2)
-    plt.ylim(-20, 25)
-    plt.plot(plot_x, Polynomial(plot_x, 0, weights), 'black')
-    plt.plot(plot_x, Polynomial(plot_x, 0, weights) + var, 'red')
-    plt.plot(plot_x, Polynomial(plot_x, 0, weights) - var, 'red')
-
-def data_graph(stage, result, var, weights, covar):
-    if stage == 'final':
+def plot_result(stage, result, var, weights, covar):
+    if stage == 'ground':
+        plt.subplot(2, 2, 1)
+        plt.title("Ground truth")
+    elif stage == 'final':
         plt.subplot(2, 2, 2)
         plt.title("Predict result")
     elif stage == 'ten':
@@ -35,21 +28,28 @@ def data_graph(stage, result, var, weights, covar):
     elif stage == 'fifty':
         plt.subplot(2, 2, 4)
         plt.title("After 50 incomes")
+
     plot_x = np.linspace(-2, 2, 100)
     plt.xlim(-2, 2)
     plt.ylim(-20, 25)
-    plt.scatter(result[:, 0], result[:, 1])
 
-    plot_y = np.empty((0, 1), float)
-    plot_y_var = np.empty((0, 1), float)
-    for x in plot_x:
-        design_x = np.array([x ** i for i in range(len(weights))])
-        plot_y = np.append(plot_y, np.array([[np.dot(design_x, weights)[0]]]), axis=0)
-        plot_y_var = np.append(plot_y_var, np.array([[1/var + np.dot(np.dot(design_x, np.linalg.inv(covar)), np.transpose(design_x))]]), axis=0)
+    if stage == 'ground':
+        plt.plot(plot_x, Polynomial(plot_x, 0, weights), 'black')
+        plt.plot(plot_x, Polynomial(plot_x, 0, weights) + var, 'red')
+        plt.plot(plot_x, Polynomial(plot_x, 0, weights) - var, 'red')
+    else:
+        plt.scatter(result[:, 0], result[:, 1])
 
-    plt.plot(plot_x, plot_y, 'black')
-    plt.plot(plot_x, plot_y + plot_y_var, 'red')
-    plt.plot(plot_x, plot_y - plot_y_var, 'red')
+        plot_y = np.empty((0, 1), float)
+        plot_y_var = np.empty((0, 1), float)
+        for x in plot_x:
+            design_x = np.array([x ** i for i in range(len(weights))])
+            plot_y = np.append(plot_y, np.array([[np.dot(design_x, weights)[0]]]), axis=0)
+            plot_y_var = np.append(plot_y_var, np.array([[1/var + np.dot(np.dot(design_x, np.linalg.inv(covar)), np.transpose(design_x))]]), axis=0)
+
+        plt.plot(plot_x, plot_y, 'black')
+        plt.plot(plot_x, plot_y + plot_y_var, 'red')
+        plt.plot(plot_x, plot_y - plot_y_var, 'red')
 
 if __name__ == "__main__":
     args = set_args()
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     Y = np.empty((0, 1), float)
     predict = np.empty((0, 2), float)
 
-    ground_graph(a, weights)
+    plot_result('ground', None, a, weights, None)
 
     while True:
         data_x = random.uniform(-1, 1)
@@ -94,12 +94,12 @@ if __name__ == "__main__":
         data_num += 1
 
         if data_num == 10:
-            data_graph('ten', predict, a, posterior_mean, posterior_covar)
+            plot_result('ten', predict, a, posterior_mean, posterior_covar)
         elif data_num == 50:
-            data_graph('fifty', predict, a, posterior_mean, posterior_covar)
+            plot_result('fifty', predict, a, posterior_mean, posterior_covar)
 
         if np.allclose(m, posterior_mean):
             break
 
-    data_graph('final', predict, predict_Y_var, posterior_mean, posterior_covar)
+    plot_result('final', predict, predict_Y_var, posterior_mean, posterior_covar)
     plt.show()
