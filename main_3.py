@@ -38,7 +38,7 @@ def plot_result(stage, result, var, weights, covar):
         plt.plot(plot_x, Polynomial(plot_x, 0, weights) + var, 'red')
         plt.plot(plot_x, Polynomial(plot_x, 0, weights) - var, 'red')
     else:
-        plt.scatter(result[:, 0], result[:, 1])
+        plt.scatter(result[:, 0], result[:, 1], s=15)
 
         plot_y = np.empty((0, 1), float)
         plot_y_var = np.empty((0, 1), float)
