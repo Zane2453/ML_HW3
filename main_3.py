@@ -1,6 +1,6 @@
 import argparse
 import random
-from math import sqrt, log
+from math import sqrt
 import numpy as np
 from main_1b import Polynomial
 import matplotlib.pyplot as plt
@@ -94,9 +94,9 @@ if __name__ == "__main__":
         data_num += 1
 
         if data_num == 10:
-            plot_result('ten', predict, a, posterior_mean, posterior_covar)
+            plot_result('ten', predict, predict_Y_var, posterior_mean, posterior_covar)
         elif data_num == 50:
-            plot_result('fifty', predict, a, posterior_mean, posterior_covar)
+            plot_result('fifty', predict, predict_Y_var, posterior_mean, posterior_covar)
 
         if np.allclose(m, posterior_mean):
             break
